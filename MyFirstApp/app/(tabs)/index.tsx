@@ -1,45 +1,62 @@
-import { Image } from 'react-native';
-import { StyleSheet } from 'react-native';
-import { View, Text } from 'react-native';
+import { useState } from 'react';
+import { View, Text, TextInput, Button, Image, ScrollView, StyleSheet } from 'react-native';
 
 export default function App() {
-return (
-  <View style={s.screen}>
-    <Image
-      source={{ uri: 'https://i.pinimg.com/736x/e3/be/30/e3be3081d56e8f0e31dbef11a83273ea.jpg' }}
-      style={s.photo}
-    />
+  // State variables
+  const [name, setName] = useState('');
+  const [name, setCount] = useState('');
 
-    // Name input
-    <TextInput
-      style={s.input}
-      placeholder="Enter your name..."
-      value={name}
-      onChangeText={setName}
-    />
+  // Message based on counter
+  const message =
+    count > 0
+      ? `${name}, you tapped ${count} times!`
+      : "Tap the + button to start";
 
-    // Greeting
-    <Text style={s.greeting}>
-      Hello, {name || 'Guest'}!
-    </Text>
-  </View>
+  return (
+    <ScrollView contentContainerStyle={styles.container}>
+      
+      {/* Profile picture */}
+      <Image source={{ uri: 'https://i.pinimg.com/736x/e3/be/30/e3be3081d56e8f0e31dbef11a83273ea.jpg' }} style={styles.image}/>
+      {/* Name input */}
+      <TextInput placeholder="Enter your name" onChangeText={setName} style={styles.input}/>
+      {/* Greeting */}
+      <Text style={styles.text}>{name === '' ? "Please enter your name" : `Hello, ${name}!`}</Text>
+      {/* Counter message */}
+      <Text style={styles.text}>{message}</Text>
+      {/* Buttons */}
+      <View style={styles.buttonContainer}>
+        <Button title="+" onPress={() => setCount(count + 1)} />
+        <Button title="-" onPress={() => setCount(count - 1)} />
+        <Button title="Reset" onPress={() => setCount(0)} />
+      </View>
+
+    </ScrollView>
   );
 }
 
-// Changed stylesheet to make profile screen look better - 05/23/26
-const s = StyleSheet.create({
-  screen: { flex:1, alignItems:'center', justifyContent:'center', backgroundColor:'#151515', padding:20 },
-  photo: { width:120, height:120, borderRadius:60 },
-  input: { width:'100%', backgroundColor:'#474747', borderWidth:1, borderColor:'#878787', padding:12, marginBottom:15 }
+// Changed stylesheet - 05/23/26
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#151515'
+  },
+
+  image: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    marginBottom: 20
+  },
+
+  input: {
+    borderWidth: 1,
+    width: '80%',
+    padding: 10,
+    marginBotton: 10
+  },
+
+  text { fontSize: 16, marginVertical: 5 },
+  buttonContainer: { marginTop: 10, width: '60%' }
 });
-
-// Basic Scripting Submission - already in react-app repository
-const myName = "Sei";
-
-const greet = (name) => {
-return `Hi, I know who you are. ${name}, right?`;
-};
-
-const classmates = ["Cyrus", "Jero", "Julia", "Kristel", "Marga"];
-
-classmates.map(name => greet(name));
